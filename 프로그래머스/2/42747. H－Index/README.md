@@ -45,6 +45,9 @@
 조건을 한번 걸어서 거기서 필터링을 거친 다음에( N회 이하 인용된 논문들 걸러)  ​
 조건 : 밖에서 for문을 걸어서, i = 0부터 배열의 길이 -1 까지 조건문 돌리게 한 다음에  ​
 그 for문 속 if문을 또 넣어서 조건문에는   
+
+
+
 ```java
 if(arr\[i\] = arr.length - i) {
 ​
@@ -54,9 +57,6 @@ return answer;
 ​
 }
 ​```
-해보기?  ​
-그런데 이렇게 하면 math.Max 메소드 활용해서 남아있는 배열 요소 중..최댓값을 구하지 않아도 될거같기도?    
-아 근데 이 위에 조건을 한번 거는 것이 너무 어렵단말이지...이 조건이 맞는지 모르겠음.....ㅋㅋ
 
 
 ​
@@ -91,8 +91,8 @@ class Solution {
 ​
 채점 결과는?
 ​
-[##_Image|kage@brjZ1l/btsGeATSlCq/XmRbZeQNjv3B06dd07c4uk/img.png|CDM|1.3|{"originWidth":1088,"originHeight":517,"style":"alignCenter"}_##]
-​
+![image](https://github.com/mithzinf/CoteQueen/assets/124668883/c23641f5-8705-4504-b5f4-d3eed24dff42)
+
 ....(처참)
 ​
 ---
