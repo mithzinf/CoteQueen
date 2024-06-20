@@ -1,130 +1,10 @@
 # [level 2] 구명보트 - 42885 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42885) 
----
-**문제 설명 ([https://school.programmers.co.kr/learn/courses/30/lessons/42885](https://school.programmers.co.kr/learn/courses/30/lessons/42885))**
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42885?language=python3) 
 
-> 무인도에 갇힌 사람들을 구명보트를 이용하여 구출하려고 합니다. 구명보트는 작아서 한 번에 최대 2명씩 밖에 탈 수 없고, 무게 제한도 있습니다.  
-> 예를 들어, 사람들의 몸무게가 \[70kg, 50kg, 80kg, 50kg\]이고 구명보트의 무게 제한이 100kg이라면 2번째 사람과 4번째 사람은 같이 탈 수 있지만 1번째 사람과 3번째 사람의 무게의 합은 150kg이므로 구명보트의 무게 제한을 초과하여 같이 탈 수 없습니다.  
-> 구명보트를 최대한 적게 사용하여 모든 사람을 구출하려고 합니다.  
-> 사람들의 몸무게를 담은 배열 people과 구명보트의 무게 제한 limit가 매개변수로 주어질 때, 모든 사람을 구출하기 위해 필요한 구명보트 개수의 최솟값을 return 하도록 solution 함수를 작성해주세요.
-
-**제한 사항**
-
--   무인도에 갇힌 사람은 1명 이상 50,000명 이하
--   각 사람의 몸무게는 40kg 이상 240kg 이하
--   구명보트의 크기는 좁아서 최대 2명만 탈 수 있음
--   구명보트의 무게 제한은 40kg 이상 240kg 이하 & 구명보트의 무게 제한은 항상 사람들의 몸무게 중 최댓값보다 크게 주어지기에, 사람들을 구출하지 못하는 경우는 없다
-
----
-
-**문제 차근차근 이해해보기**
-
-
-문제 포인트 
-
--   보트에 2명만 탈 수 있다는 조건이 이 문제를 푸는 게 중요한 포인트
-    -   아무나 둘씩 태워서는 안됨, '최대 몸무게 + 최소 몸무게' 조합으로 짝지어서 태워야 구명보트를 가장 최소로 사용할 수 있다.
--   if) 최대 몸무게 + 최소 몸무게 한쌍의 짝이 구명보트의 최대 수용무게보다 높을 경우에는, 그 사람은 무조건 혼자 타야함
-
----
-
-**문제 풀이**
-
-```java
-import java.util.Arrays;
-
-class Solution {
-    
-    public int solution(int[] people, int limit) {
-        
-        Arrays.sort(people);
-        
-        int answer = 0;
-        int num = people.length - 1;
-        for(int i = 0; i <= num; i++, answer++)
-            while(num > i && people[i] + people[num--] > limit)
-                answer++;
-        return answer;
-    }
-}
-```
-
-풀이 방식 : 
-
-```
-  Arrays.sort(people);
-```
-
-첫째) 무인도에 갇힌 사람들의 몸무게가 담긴  people 배열을 오름차순으로 정렬하고(낮 -> 높)
-
-```
-int answer = 0; //구명보트 갯수 answer 0으로 초기화
-```
-
-둘째) 구명보트의 갯수 answer은 0으로 초기화한 후
-
-```
-int num = people.length - 1;
-```
-
-셋째) int 변수 num을 준비해서, num 변수에 people 배열 중 가장 마지막번째 인덱스를  num에 대입
-
-(사유 : people 배열 중 가장 마지막 요소 : 제일 몸무게 많이 나가는 사람)
-
-_if) 배열 people의 길이가 10이라면 num은 9_
-
-```
-for(int i = 0; i <= num; i++, answer++)
-```
-
-넷째) for문 :  i는 0부터(가장 가벼운 사람)으로 배열 중 가장 마지막 인덱스의 수까지 for문을 돌림
-
-_if) 앞서 num = 9였기때문에 for문은 곧 for( int i = 0; i <= 9; num++, answer++) 이 되는 거고, for문은 0~9까지 10번 돌아감_
-
-answer++ : while 조건문이 거짓일때 조건문을 나와 for문으로 다시 가는데, 그때 +1 되는 보트수를 answer++로 처리
-
-```
-while(num > i && people[i] + people[num--] > limit)
-answer++;
-```
-
-다섯째) 조건 : num은 i보다 커야하고 & 배열 people의 i번째(최소) + people의 num번째(최대)의 합이 limit보다 커야하는 조건
-
-참이라면) **몸무게 합이 무게 제한을 초과**  : num의 사람은 혼자 보트를 타야 하므로 보트를 하나 더 늘림 (while문 아래의 answer 1 증가) & 그 다음 무거운 사람과의 조합을 보기 위해 num을 1 감소
-
-거짓이라면) **두 사람의 몸무게 합이 무게 제한 이하** : 같이 보트를 탑승 할 수 있음 -> while문을 나와 for문으로 다시 감 > for문의 answer++을 통해 탑승할 새로운 보트 +1
-
-다시 풀 때 약간, 어라라?하고 궁금했던 부분이 여기였음
-
-몸무게 최소 + 최대의 합이 구명보트의 무게 제한보다 낮아야, 배를 타고 탈출 할 수 있는건데 왜 부등호 > 를 썼을까? <를 써야 맞는 거 아닌지?
-
-답) ∴ '>' 부등호는 두 사람의 몸무게 합이 보트의 무게 제한을 초과하는 경우를 찾아서 처리하기 위해서 쓴 것
-
-문제에서 말하던 것은 '보트를 최소한으로 써서 모든 인원을 구출해라' 였기 때문에
-
-최소 몸무게 + 최대 몸무게 합이 limit보다 크면( > 조건 만족하면), 이 조합의 두 사람은 동승하여 탈출할 수 없음 > 둘 중 한명은 다른 보트를 타야함(다른 방법을 모색해야 함) ->  그 다음으로 무거운 사람 검사
-
-```java
-for(int i = 0; i <= num; i++, answer++)
-            while(num > i && people[i] + people[num--] > limit)
-                answer++;
-        return answer;
-        
-        //for문 안의 answer++와 while문 안에 있는 answer++은 서로 다른 조건에서 작용
-        
-        //for문 안의 answer++ : for문의 반복이 실행될 때마다 실행됨. 적어도 한 명은 보트를 타야한다는 것을 의미, 그 한 명 = i번째 대상
-        // people[i] + people[num--] <= limit일 때도(조건이 거짓일 때) while문을 나와서 for문의 answer++에 의해 보트를 타게 됨
-        
-        //while 문의 answer++ : people[i] + people[num--] > limit일때(조건이 참일때) while문 후에 있는 answer++에 의해 가장 무거운 사람 혼자 보트를 타야하며
-        //answer를 증가시켜 추가 보트가 필요함을 나타내고 이후 num은 감소하여 그 다음 가장 무거운 사람을 의미하게 됨
-```
-
-
----
 ### 성능 요약
 
-메모리: 53.8 MB, 시간: 8.67 ms
+메모리: 10.5 MB, 시간: 7.91 ms
 
 ### 구분
 
@@ -136,7 +16,7 @@ for(int i = 0; i <= num; i++, answer++)
 
 ### 제출 일자
 
-2024년 03월 16일 14:53:04
+2024년 06월 20일 22:58:04
 
 ### 문제 설명
 
